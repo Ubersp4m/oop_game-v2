@@ -6,7 +6,7 @@ class Game{
     //receives .key class object from app.js as element in constructor to bind event listener instance 
     constructor(element){
         this.missed = 0;
-        this.phrases = [{phrase: "All clouds have souls"}, {phrase: "The boat was like a pea floating in a great bowl of blue soup"}, {phrase:"He embraced his new life as an eggplant"}, {phrase: "Karen realized the only way she was getting into heaven was to cheat"}, {phrase:"No my owl never paints"}];
+        this.phrases = [new Phrase("All clouds have souls"), new Phrase("The boat was like a pea floating in a great bowl of blue soup"), new Phrase("He embraced his new life as an eggplant"), new Phrase("Karen realized the only way she was getting into heaven was to cheat"), new Phrase("No my owl never paints")];
         this.activePhrase = null;
         this.keysElement = element;
         this.handleInteraction = this.handleInteraction.bind(this);   
@@ -18,9 +18,7 @@ class Game{
     startGame(){
         let start = document.querySelector('.start');
         start.style.display = 'none';
-        let newPhrase = this.getRandomPhrase();
-        newPhrase.phrase = newPhrase.phrase.toLowerCase();
-        this.activePhrase = new Phrase(newPhrase.phrase);
+        this.activePhrase = this.getRandomPhrase();
         console.log('the game phrase: '+this.activePhrase.phrase);
         this.activePhrase.addPhraseToDisplay();
     }
@@ -45,17 +43,19 @@ class Game{
                 var button = buttons[0];
             }
               //  console.log(button);
-                let found = this.activePhrase.checkLetter(button.textContent.trim())
-                if(found){
-                    button.classList.add('chosen');
-                    button.disabled = true;
-                    let winlose = this.checkForWin();
-                    if(winlose)this.gameOver(true);
-                }
-                else if(!found){
-                    button.disabled=true;
-                    button.classList.add('wrong');
-                    this.removeLife();
+              if(!button.disabled){
+                    let found = this.activePhrase.checkLetter(button.textContent.trim())
+                    if(found){
+                        button.classList.add('chosen');
+                        button.disabled = true;
+                        let winlose = this.checkForWin();
+                        if(winlose)this.gameOver(true);
+                    }
+                    else if(!found){
+                        button.disabled=true;
+                        button.classList.add('wrong');
+                        this.removeLife();
+                    }
                 }
             
 
