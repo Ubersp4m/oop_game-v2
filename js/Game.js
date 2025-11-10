@@ -6,7 +6,7 @@ class Game{
     //receives .key class object from app.js as element in constructor to bind event listener instance 
     constructor(element){
         this.missed = 0;
-        this.phrases = ["All clouds have souls", "The boat was like a pea floating in a great bowl of blue soup", "He embraced his new life as an eggplant", "Karen realized the only way she was getting into heaven was to cheat", "No my owl never paints"]
+        this.phrases = [{phrase: "All clouds have souls"}, {phrase: "The boat was like a pea floating in a great bowl of blue soup"}, {phrase:"He embraced his new life as an eggplant"}, {phrase: "Karen realized the only way she was getting into heaven was to cheat"}, {phrase:"No my owl never paints"}];
         this.activePhrase = null;
         this.keysElement = element;
         this.handleInteraction = this.handleInteraction.bind(this);   
@@ -18,14 +18,15 @@ class Game{
     startGame(){
         let start = document.querySelector('.start');
         start.style.display = 'none';
-        let phrase = this.getRandomPhrase().toLowerCase();
-        this.activePhrase = new Phrase(phrase);
+        let newPhrase = this.getRandomPhrase();
+        newPhrase.phrase = newPhrase.phrase.toLowerCase();
+        this.activePhrase = new Phrase(newPhrase.phrase);
         console.log('the game phrase: '+this.activePhrase.phrase);
         this.activePhrase.addPhraseToDisplay();
     }
 
     getRandomPhrase(){
-        let randomNum = Math.floor(Math.random() * 4);
+        let randomNum = Math.floor(Math.random() * 5);
         return this.phrases[randomNum];
     }
     /*
@@ -34,10 +35,11 @@ class Game{
 
     */
     handleInteraction(e){
+            //console.log('target: '+e.target.tagName);
             if(e.target.tagName === 'BUTTON' && e.type === 'click') {
                var button = e.target;
             }
-            else if (e.target.tagName==='DIV' && e.type === 'keyup'){
+            else if (e.target.tagName==='BODY' && e.type === 'keyup'){
                 let buttons = document.querySelectorAll(`.key`);
                 buttons = [...buttons].filter(element => element.textContent.includes(e.key));
                 var button = buttons[0];
@@ -67,8 +69,7 @@ class Game{
         key.removeEventListener('click', this.handleInteraction);
          });
         
-        const qwerty = document.getElementById('qwerty');
-        qwerty.removeEventListener('keyup', this.handleInteraction);
+        document.removeEventListener('keyup', this.handleInteraction);
 
         let resetChosen = document.querySelectorAll('.chosen');
         resetChosen.forEach(chosen => {
@@ -132,7 +133,7 @@ class Game{
         if(winlose){
             let msg = `Congratulations you win!`;
             winloseH1.textContent = msg;
-            overlay.classList.add('win');
+            overlay.className='start win';
             overlay.style.display = 'block';
             this.resetKeyboard();
             startButton.focus();
@@ -141,7 +142,7 @@ class Game{
         else{
             let msg = `Game Over! Try again!`;
             winloseH1.textContent = msg;
-            overlay.classList.add('lose');
+            overlay.className='start lose';
              overlay.style.display = 'block';
             this.resetKeyboard();
             startButton.focus();

@@ -18,9 +18,9 @@ startButton.addEventListener('click', (e) => {
     game.keysElement.forEach(key => {
         key.addEventListener('click', game.handleInteraction);
     });
-    qwerty.setAttribute('tabindex', '0');
-    qwerty.focus();
-    qwerty.removeEventListener('keyup', game.handleInteraction);
-    qwerty.addEventListener('keyup', game.handleInteraction);
+    //qwerty.setAttribute('tabindex', '0');
+    //qwerty.focus();
+    document.removeEventListener('keyup', game.handleInteraction);
+    document.addEventListener('keyup', game.handleInteraction);
 });
 
