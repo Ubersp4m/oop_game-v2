@@ -19,15 +19,13 @@ class Phrase{
                 html += `<li class='hide letter ${character}'>${character}</li>`;
             }
         });
-        //console.log(html);
         phraseUL.innerHTML = html;
     }
 
     checkLetter(letter){
         let found = false;
-        letter = letter.toLowerCase();
+        letter = letter.toLowerCase();  
         const arrPhrase = this.phrase.split('');
-        //console.log(character+' '+ index);
         if(arrPhrase.includes(letter)){
             this.showMatchedLetter(letter);
             found=true;
