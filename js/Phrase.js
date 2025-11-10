@@ -6,7 +6,9 @@ class Phrase{
     constructor(phrase){
         this.phrase = phrase.toLowerCase();
     }
-
+/*
+    gets UL element and assigns innerHTML to list elements of letters for phrase
+*/
     addPhraseToDisplay(){
         const phraseUL = document.getElementById('phrase');
         let html = '';
@@ -22,6 +24,10 @@ class Phrase{
         phraseUL.innerHTML = html;
     }
 
+    /*
+        checks to see if letter is included in the array of phrase characters
+        returns true or false for letter found
+    */
     checkLetter(letter){
         let found = false;
         letter = letter.toLowerCase();  
@@ -33,6 +39,9 @@ class Phrase{
         return found;
     }
 
+    /*
+        sets show class and removes hide for list elements where phrase letter was found
+    */
     showMatchedLetter(letter){
         const showLI = document.querySelectorAll(`#phrase > .${letter}`);
         for(const LI of showLI){
@@ -42,6 +51,3 @@ class Phrase{
     }
 
 }
-
-const phrase = new Phrase('testing this out');
-phrase.checkLetter('t');

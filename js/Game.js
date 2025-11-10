@@ -3,7 +3,7 @@
  * Game.js */
 
 class Game{
-    //added #qwerty element to constructor to bind event listener instance 
+    //receives .key class object from app.js as element in constructor to bind event listener instance 
     constructor(element){
         this.missed = 0;
         this.phrases = ["All clouds have souls", "The boat was like a pea floating in a great bowl of blue soup", "He embraced his new life as an eggplant", "Karen realized the only way she was getting into heaven was to cheat", "No my owl never paints"]
@@ -11,7 +11,10 @@ class Game{
         this.keysElement = element;
         this.handleInteraction = this.handleInteraction.bind(this);   
     }
-
+/*
+    hides start screen
+    sets phrase and instantiates Phrase class with random phrase
+*/
     startGame(){
         let start = document.querySelector('.start');
         start.style.display = 'none';
@@ -25,7 +28,11 @@ class Game{
         let randomNum = Math.floor(Math.random() * 4);
         return this.phrases[randomNum];
     }
+    /*
+        takes in event 'e' and checks for trigger element.
+        if keyup converts the keyup toggle to a button for visual response
 
+    */
     handleInteraction(e){
             if(e.target.tagName === 'BUTTON' && e.type === 'click') {
                var button = e.target;
@@ -51,14 +58,16 @@ class Game{
             
 
     }
-
+    /*
+        resets classes for keyboard and removes old event listener instances
+    */
     resetKeyboard(){
         
         this.keysElement.forEach(key => {
         key.removeEventListener('click', this.handleInteraction);
          });
         
-         const qwerty = document.getElementById('qwerty');
+        const qwerty = document.getElementById('qwerty');
         qwerty.removeEventListener('keyup', this.handleInteraction);
 
         let resetChosen = document.querySelectorAll('.chosen');
@@ -80,6 +89,9 @@ class Game{
 
     }
 
+    /*
+        adds missed letter attempt to this and updates heart image with correct number of lives left
+    */
     removeLife(){
         this.missed++;
         let removeHeartIMG = document.querySelector(`#scoreboard ol li:nth-child(${6-this.missed}) img`);
@@ -89,6 +101,11 @@ class Game{
         }
     }
 
+    /*
+        -converts phrase to an array and checks DOM for hidden 
+            character of the array letter class
+        -keeps track of letters left to guess in lettersLeft[]
+    */
     checkForWin(){
         let arrPhrase=this.activePhrase.phrase.split('');
         let win =false;
@@ -105,7 +122,10 @@ class Game{
         }
         return win;
     }
-
+/*
+    toggles appropriate overlay for win or lose, calls resetKeyboard and
+    assigns focus to the start game button
+*/
     gameOver(winlose){
         let overlay = document.getElementById('overlay');
         let winloseH1 = document.getElementById('game-over-message');
